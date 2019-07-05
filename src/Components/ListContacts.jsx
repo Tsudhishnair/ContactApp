@@ -43,12 +43,26 @@ class ListContacts extends Component {
   gotErr = err => {
     console.log(err);
   };
-
+//@Todo : Check the image url its not working currently
   render() {
     return (
-      <ul>
-        {this.state.entireData.map((eachcontect, index) => (
-          <li key={index}>{eachcontect.name}</li>
+      <ul className="contact-list">
+        {this.state.entireData.map((eachcontent, index) => (
+          <li key={index} className="contact-list-item">
+            <div
+              className="contact-avatar"
+              style={{
+                backgroundImage: `url(${eachcontent.imgurl})`
+              }}
+            />
+            {console.log(eachcontent.imgurl)}
+            <div className="contact-details">
+              <p>{eachcontent.name}</p>
+              {/* <p>{eachcontent.age}</p> */}
+              <p>{eachcontent.email}</p>
+            </div>
+            <button className="contact-remove">Remove</button>
+          </li>
         ))}
       </ul>
     );
