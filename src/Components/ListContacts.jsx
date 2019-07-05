@@ -10,7 +10,8 @@ class ListContacts extends Component {
         name: [],
         age: [],
         email: []
-      }
+      },
+      entireData: []
     };
   }
   //To change the state after initial rendering
@@ -22,11 +23,14 @@ class ListContacts extends Component {
   // Callback Method called when retrieves the data from the database
   gotData = data => {
     let dataitems = data.val();
-    let names = dataitems.name;
-    let ages = dataitems.age;
-    let emails = dataitems.email;
+    console.log(dataitems);
+    let names = dataitems.map((datarow, index) => datarow.name);
+    let ages = dataitems.map((datarow, index) => datarow.age);
+    let emails = dataitems.map((datarow, index) => datarow.email);
     console.log(names);
     this.setState({
+      ...this.state,
+      entireData: dataitems,
       contactData: {
         ...this.state,
         name: names,
@@ -39,11 +43,14 @@ class ListContacts extends Component {
   gotErr = err => {
     console.log(err);
   };
+
   render() {
     return (
-      <div>
-        <strong>Hello</strong>
-      </div>
+      <ul>
+        {this.state.entireData.map((eachcontect, index) => (
+          <li key={index}>{eachcontect.name}</li>
+        ))}
+      </ul>
     );
   }
 }

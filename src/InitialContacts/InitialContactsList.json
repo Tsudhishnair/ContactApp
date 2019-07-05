@@ -1,7 +1,14 @@
 {
-  "ContactsList":{
-    "name":["T SUDHISH NAIR","RAMU","SUJATHA","SUMI"],
-    "age":["22","56","46","12"],
-    "email":["sudhishnair53@gmail.com","urathsnair.nair@gmail.com","sujathausnair@gmail.com","sumi@gmail.com"]
-  }
+  "ContactsList":[
+    {
+    "name":"T SUDHISH NAIR",
+    "age":22,
+    "email":"sudhishnair53@gmail.com"   
+    },
+    {
+      "name":"U SUNDARESWARAN",
+      "age":56,
+      "email":"urathsnair.nair@gmail.com"       
+    }
+    ]
 }
