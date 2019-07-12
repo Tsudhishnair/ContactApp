@@ -7,7 +7,8 @@ class ListContacts extends Component {
   constructor() {
     super();
     this.state = {
-      entireData: []
+      entireData: [],
+      query: ""
     };
   }
   //To change the state after initial rendering
@@ -45,6 +46,12 @@ class ListContacts extends Component {
       query: query.trim()
     });
   };
+  // Clears the query and shows the entire contact list
+  clearQuery = () => {
+    this.setState({
+      query: ""
+    });
+  };
   //@Todo : Check the image url its not working currently
 
   render() {
@@ -72,7 +79,8 @@ class ListContacts extends Component {
           <div className="showing-contacts">
             <span>
               Now showing {showingContacts.length} out of {entireData.length}
-             </span>
+            </span>
+            <button onClick={this.clearQuery}>Show all</button>
           </div>
         )}
         <ul className="contact-list">
@@ -86,7 +94,9 @@ class ListContacts extends Component {
               />
               {console.log(eachcontent.imgurl)}
               <div className="contact-details">
-                <p>{eachcontent.name}</p>
+                <p>
+                  <strong>{eachcontent.name}</strong>
+                </p>
                 <p>{eachcontent.email}</p>
                 <p>{eachcontent.phonenumber}</p>
               </div>
