@@ -1,3 +1,8 @@
+# Contacts
+  `Contacts` is basically a contact list where one can see  there contactlist, add new contacts and search them. This application is build using **ReactJs** and uses **Firebase Realtime Database** for storing the contact details.
+  
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
