@@ -8,7 +8,8 @@ class ListContacts extends Component {
     super();
     this.state = {
       entireData: [],
-      query: ""
+      query: "",
+      hasValue: 0
     };
   }
   //To change the state after initial rendering
@@ -16,16 +17,27 @@ class ListContacts extends Component {
     const DB = firebase.database();
     const contactlistdata = DB.ref("ContactsList");
     contactlistdata.on("value", this.gotData, this.gotErr);
+    console.log("hello");
   }
   // Callback Method called when retrieves the data from the database
   gotData = data => {
     let dataitems = data.val();
-    // console.log(dataitems)
-    this.setState({
-      ...this.state,
-      entireData: dataitems,
-      query: ""
-    });
+    {
+      data.val() === null &&
+        this.setState({
+          hasValue: 0
+        });
+    }
+    // console.log(dataitems);
+    console.log("hey");
+    {
+      data.val() !== null &&
+        this.setState({
+          ...this.state,
+          entireData: Object.values(Object.values(dataitems)),
+          hasValue: 1
+        });
+    }
   };
   // Callback method called when receives some error during the retrieval of data from the database
   gotErr = err => {
@@ -33,12 +45,13 @@ class ListContacts extends Component {
   };
   // Method handles the contact delete
   handleRemoveContact = e => {
-    console.log(e);
-    firebase
-      .database()
-      .ref("ContactsList/" + e)
-      .remove();
-    console.log("item removed");
+    console.log(e.target);
+    console.log("I");
+    // firebase
+    //   .database()
+    //   .ref("ContactsList/" + e.key)
+    //   .remove();
+    // console.log("item removed");
   };
   //Method to set the state of the query/search field
   handleQueryChange = query => {
@@ -52,7 +65,6 @@ class ListContacts extends Component {
       query: ""
     });
   };
-  //@Todo : Check the image url its not working currently
 
   render() {
     const { query, entireData } = this.state;
@@ -62,8 +74,9 @@ class ListContacts extends Component {
       showingContacts = entireData.filter(contact => match.test(contact.name));
     } else {
       showingContacts = entireData;
+      console.log(showingContacts);
     }
-    showingContacts.sort(sortBy("name"));
+    // showingContacts[1].sort(sortBy("name"));
     return (
       <div className="list-contacts">
         <div className="list-contacts-top">
@@ -78,40 +91,52 @@ class ListContacts extends Component {
             Add Contact
           </Link>
         </div>
-        {showingContacts.length !== entireData.length && (
-          <div className="showing-contacts">
-            <span>
-              Now showing {showingContacts.length} out of {entireData.length}
-            </span>
-            <button onClick={this.clearQuery}>Show all</button>
+        {this.state.hasValue === 1 && (
+          <div>
+            {showingContacts.length !== entireData.length && (
+              <div className="showing-contacts">
+                <span>
+                  Now showing {showingContacts.length} out of{" "}
+                  {entireData.length}
+                </span>
+                <button onClick={this.clearQuery}>Show all</button>
+              </div>
+            )}
+            <ul className="contact-list">
+              {showingContacts.map((eachcontent, index) => (
+                <li key={index} className="contact-list-item">
+                  <div
+                    className="contact-avatar"
+                    style={{
+                      backgroundImage: `url(${eachcontent.avatar})`
+                    }}
+                  />
+                  {console.log(eachcontent.imgurl)}
+                  <div className="contact-details">
+                    <p>
+                      <strong>{eachcontent.name}</strong>
+                    </p>
+                    <p>{eachcontent.email}</p>
+                    <p>{eachcontent.phonenumber}</p>
+                  </div>
+                  <button
+                    className="contact-remove"
+                    onClick={e => this.handleRemoveContact(e)}
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
         )}
-        <ul className="contact-list">
-          {showingContacts.map((eachcontent, index) => (
-            <li key={index} className="contact-list-item">
-              <div
-                className="contact-avatar"
-                style={{
-                  backgroundImage: `url(${eachcontent.imgurl})`
-                }}
-              />
-              {console.log(eachcontent.imgurl)}
-              <div className="contact-details">
-                <p>
-                  <strong>{eachcontent.name}</strong>
-                </p>
-                <p>{eachcontent.email}</p>
-                <p>{eachcontent.phonenumber}</p>
-              </div>
-              <button
-                className="contact-remove"
-                onClick={e => this.handleRemoveContact(index)}
-              >
-                Remove
-              </button>
-            </li>
-          ))}
-        </ul>
+        {this.state.hasValue === 0 && (
+          <div className="contact-details contact-list">
+            <p>
+              <center>No Contacts Available</center>
+            </p>
+          </div>
+        )}
       </div>
     );
   }
