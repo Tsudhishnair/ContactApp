@@ -9,6 +9,15 @@
       "name":"U SUNDARESWARAN",
       "age":56,
       "email":"urathsnair.nair@gmail.com"       
+    }, {
+      "name":"T SUJATHA NAIR",
+      "age":46,
+      "email":"sujathanair@gmail.com"       
+    },
+    {
+      "name":"Sumi",
+      "age":13,
+      "email":"sumi@gmail.com"       
     }
     ]
 }
