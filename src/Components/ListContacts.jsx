@@ -48,16 +48,15 @@ class ListContacts extends Component {
   //@Todo : Check the image url its not working currently
 
   render() {
+    const { query, entireData } = this.state;
     let showingContacts;
-    if (this.state.query) {
-      const match = new RegExp(escapeRegExp(this.state.query), "i");
-      showingContacts = this.state.entireData.filter(contact =>
-        match.test(contact.name)
-      );
+    if (query) {
+      const match = new RegExp(escapeRegExp(query), "i");
+      showingContacts = entireData.filter(contact => match.test(contact.name));
     } else {
-      showingContacts = this.state.entireData;
+      showingContacts = entireData;
     }
-    showingContacts.sort(sortBy('name'))
+    showingContacts.sort(sortBy("name"));
     return (
       <div className="list-contacts">
         <div className="list-contacts-top">
@@ -65,10 +64,17 @@ class ListContacts extends Component {
             className="search-contacts"
             type="text"
             placeholder="search contact's here"
-            value={this.state.query}
+            value={query}
             onChange={e => this.handleQueryChange(e.target.value)}
           />
         </div>
+        {showingContacts.length !== entireData.length && (
+          <div className="showing-contacts">
+            <span>
+              Now showing {showingContacts.length} out of {entireData.length}
+             </span>
+          </div>
+        )}
         <ul className="contact-list">
           {showingContacts.map((eachcontent, index) => (
             <li key={index} className="contact-list-item">
@@ -82,6 +88,7 @@ class ListContacts extends Component {
               <div className="contact-details">
                 <p>{eachcontent.name}</p>
                 <p>{eachcontent.email}</p>
+                <p>{eachcontent.phonenumber}</p>
               </div>
               <button
                 className="contact-remove"
